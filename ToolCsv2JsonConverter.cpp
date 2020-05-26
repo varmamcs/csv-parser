@@ -7,7 +7,6 @@
 #include<list>
 #include<memory>
 #include<thread>
-//#include <algorithm>
 
 #include "Record.hpp"
 #include "RecordContainer.hpp"
@@ -29,11 +28,7 @@ using namespace std::chrono;
 class ToolCsv2JsonConverter
 {
 public:
-	ToolCsv2JsonConverter(auto&& fileName) : csvFile(fileName)
-	{
-	}
-
-	void processCsv()
+	void processCsv(auto&& csvFile)
 	{
 		ifstream csv;
 		csv.open(csvFile);
@@ -72,6 +67,7 @@ public:
 				})
 			);
 		}
+		csv.close();
 
 		// Reading input file is complete, now we have to start merging the containers in queue
 		while(processQueue.size() > 1)
@@ -97,14 +93,12 @@ public:
 
 			// Merge the container2 in to container1 in a thread
 			container->startProcessing();
-/*
+			container->extendReserve(*container2);
 			threads.push_back(
 				thread([container, container2]{
 					container->mergeContainersAndHeapify(*container2);
 				})
 			);
-*/
-			container->mergeContainersAndHeapify(*container2);
 			processQueue.push(container);
 		}
 
@@ -112,26 +106,41 @@ public:
 		for_each(threads.begin(), threads.end(), [](auto& t) { t.join(); } );
 
 		auto container = processQueue.front();
-		processQueue.pop();
 		container->sortContainer();
-		container->printContainerInJSON();
+	}
 
-		csv.close();
+	void logJson()
+	{
+		if (processQueue.size() == 1)
+		{
+			auto container = processQueue.front();
+			container->printContainerInJSON();
+		}
+		cout << "JSON is not generated yet!" << endl;
 	}
 
 private:
-	string csvFile;
 	queue<shared_ptr<RecordContainer>> processQueue;
 	list<thread> threads;
 };
 
 int main()
 {
-	ToolCsv2JsonConverter tool("data3.txt");
+	ToolCsv2JsonConverter tool;
+
 	auto start = high_resolution_clock::now(); 
-	tool.processCsv();
+	tool.processCsv("data3.txt");
 	auto stop = high_resolution_clock::now(); 
+
+	// Json generated, now start logging the Json.
+	tool.logJson();
+	auto loggingstop = high_resolution_clock::now();
+
 	auto duration = duration_cast<seconds>(stop - start);
+	auto logJsonduration = duration_cast<seconds>(loggingstop - stop);
+
 	cout << "Execution time : " << duration.count() << endl;
+	cout << "Logging Json output time : " << logJsonduration.count() << endl;
+
 	return 0;
 }

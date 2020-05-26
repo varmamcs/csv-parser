@@ -59,12 +59,17 @@ public:
 		finishedProcessing();
 	}
 
-	void mergeContainersAndHeapify(const RecordContainer& r)
+	void extendReserve(const RecordContainer& r)
 	{
 		auto newSize = records.size() + r.records.size();
 
 		// extend the heap to include the new container
 		records.reserve(newSize);
+	}
+
+	// extend Reserve must be called prior to calling merge
+	void mergeContainersAndHeapify(const RecordContainer& r)
+	{
 		records.insert(records.end(), r.records.begin(), r.records.end());
 		make_heap(records.begin(), records.end());
 
