@@ -54,3 +54,12 @@ Summary of implementation
        When the queue size is one, it indicates that we merged all the RecordContainer Objects  
        in to one Object wherein the Records are maintained in a Heap. We then sort all those  
        objects from the heap and log to standard output.
+
+
+Note  
+
+      Due to RAM capacity limitation on my PC i couldn't test the program with file larger than 3 GB.  
+      On my PC the processing time for 3 GB file was ~30 seconds and Json logging took more time ~80 seconds.  
+      I did quick test to verify the functional aspect of the code to confirm it meets the expected  
+      behavior for the tool. 
+       
