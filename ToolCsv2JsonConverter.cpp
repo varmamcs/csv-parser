@@ -129,7 +129,7 @@ int main()
 	ToolCsv2JsonConverter tool;
 
 	auto start = high_resolution_clock::now(); 
-	tool.processCsv("data3.txt");
+	tool.processCsv("data.txt");
 	auto stop = high_resolution_clock::now(); 
 
 	// Json generated, now start logging the Json.

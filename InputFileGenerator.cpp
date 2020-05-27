@@ -72,6 +72,6 @@ private:
 int main()
 {
 	InputFileGenerator generateInputFile;
-	generateInputFile("data3.txt", 3);
+	generateInputFile("data.txt", 10);
 	return 0;
 }
