@@ -55,11 +55,3 @@ Summary of implementation
        in to one Object wherein the Records are maintained in a Heap. We then sort all those  
        objects from the heap and log to standard output.
 
-
-Note  
-
-      Due to RAM capacity limitation on my PC i couldn't test the program with file larger than 3 GB.  
-      On my PC the datastructure was created in ~30 seconds for a 3 GB file. Logging the Json took ~80 seconds.  
-      I did quick test to verify the functional aspect of the code to confirm it meets the expected  
-      behavior for the tool. 
-       
